@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StationWindow</class>
+ <widget class="QMainWindow" name="StationWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>379</width>
+    <height>516</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ViconMAVLink</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="6" column="3">
+     <widget class="QComboBox" name="NorthMapComboBox">
+      <item>
+       <property name="text">
+        <string>+x</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>-x</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>+y</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>-y</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <widget class="QLineEdit" name="hostPortLine"/>
+    </item>
+    <item row="6" column="0" colspan="3">
+     <widget class="QLineEdit" name="viconGPSLine"/>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Caputured Objects:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0" rowspan="2" colspan="4">
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QListWidget" name="listWidget"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_2"/>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="hostAddressLabel">
+      <property name="text">
+       <string>HostAddress:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QLabel" name="hostPortLabel">
+      <property name="text">
+       <string>HostPort:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="3">
+     <widget class="QLineEdit" name="hostAddressLine"/>
+    </item>
+    <item row="4" column="0" colspan="2">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>GPS Coordinates of Vicon Origin:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QLabel" name="NothLabel">
+      <property name="text">
+       <string>North:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0">
+     <widget class="QPushButton" name="startMavLinkSenderButton">
+      <property name="text">
+       <string>Start a MavLink Sender</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="dtLabel">
+      <property name="text">
+       <string>dt</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="status">
+      <property name="text">
+       <string>status</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>379</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuMenu">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="actionConnect_Vicon"/>
+    <addaction name="actionDisconnect_Vicon"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <addaction name="menuMenu"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionConnect_Vicon">
+   <property name="text">
+    <string>Connect Vicon</string>
+   </property>
+  </action>
+  <action name="actionDisconnect_Vicon">
+   <property name="text">
+    <string>Disconnect Vicon</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
