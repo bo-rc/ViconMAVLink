@@ -3,7 +3,7 @@ import socket, serial
 from pymavlink import mavutil
 
 
-class UdpReceiver:
+class UdpPass:
 
     consumed_ports = []
 
@@ -16,13 +16,15 @@ class UdpReceiver:
     '''a UDP connection to receive data'''
     def __init__(self, fc_device, local_port):
         self._port = str(local_port)
-        if self._port in UdpReceiver.consumed_ports:
+        if self._port in UdpPass.consumed_ports:
             raise Exception('port already used!')
 
-        UdpReceiver.consumed_ports.append(self._port)
-        self._ip = UdpReceiver.get_ip_address()
+        UdpPass.consumed_ports.append(self._port)
+        self._ip = UdpPass.get_ip_address()
         self._connection_string = 'udp:' + self._ip + ':' + self._port
         self._mavudp = mavutil.mavlink_connection(self._connection_string)
+
+        # Create serial device
         try:
             self._mavserial = mavutil.mavlink_connection(fc_device,baud=921600)
         except serial.serialutil.SerialException : 
@@ -40,20 +42,14 @@ class UdpReceiver:
     def get_ip(self):
         return self._ip
 
-    def update_data(self, msg_type_list):
-        for msg_type_string in msg_type_list:
+
+    # Wait for Mavlink messages and send them on when they are received
+    def passthrough(self):
+        while(True) :
             msg = None
             while msg is None:
-                msg = self._mavudp.recv_match(type=msg_type_string)
-            self._data[msg_type_string] = msg
-            self._mavserial.write(msg)
-
-    def passthrough(self):
-        msg = None
-        while msg is None:
-            msg = self._mavudp.recv_msg()
-	#print(msg)
-        self._mavserial.write(msg.get_msgbuf())
+                msg = self._mavudp.recv_msg()
+            self._mavserial.write(msg.get_msgbuf())
 
 
 

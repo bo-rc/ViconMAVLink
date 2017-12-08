@@ -1,9 +1,9 @@
-from UdpReceiver import *
+from UdpPass import *
 
-vicon = UdpReceiver('/dev/ttyAMA0',45454)
+vicon = UdpPass('/dev/ttyAMA0',45454)
 
 
-print('running...')
-while(True) :
-	vicon.passthrough()
+print('Passing...')
+
+vicon.passthrough()
 
