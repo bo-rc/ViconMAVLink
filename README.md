@@ -1,7 +1,7 @@
 # ViconMAVLink
 ViconMAVLink is an application to provide indoor positioning for networked robots using Vicon motion capture measurements. It is primarily used in the [Intellegent Robotics Lab](robotics.illinois.edu) at the University of Illinois as a tool to simulate indoor GPS for Linux-based autonomous vehicles, such that you can operate autonomous vehicles indoors:
 
-<img src="figs/launching.gif" width="800" align="middle"> 
+<img src="figs/launching.gif" width="600" align="center"> 
 
 # Dependencies
 ViconMAVLink uses the following libraries:
@@ -36,7 +36,7 @@ You may launch multiple senders for a fleet of robots:
 <img src="figs/fleet.gif" width="400">
 
 # Developer's Guide
-The Station object will launch a separate thread to communicate with Vicon. A Writer/Reader lock is used to synchronize data. The Station object is the writer and Sender objects are the readers who fetch raw measurement from the station. The raw measurement includes position (unit: mm) and a quarternion encapsulated in a `mavlink_att_pos_mocap_t` object. Since Vicon does not output velocities of objects, the Sender uses a linear Kalman filter to compute a `mavlink_local_position_ned_t` object with positions and velocities. The `GPS_HIL` data is then computed with the local position object. 
+The Station object will launch a separate thread to communicate with Vicon. A Writer/Reader lock is used to synchronize data. The Station object is the writer and Sender objects are the readers who fetch raw measurement from the Station. The raw measurement includes position (unit: mm) and a quarternion encapsulated in a `mavlink_att_pos_mocap_t` object. Since Vicon does not output velocities, the Sender uses a linear Kalman filter to compute a `mavlink_local_position_ned_t` object with positions and velocities. The `GPS_HIL` data is then computed with the local position object. The Station and Sender objects and windows use the Model-View-Controller pattern.
 
 
 
