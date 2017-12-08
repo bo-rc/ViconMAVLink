@@ -34,7 +34,7 @@ __To stream positioning data to the robot__:
 You may launch multiple senders for a fleet of robots.
 
 # Developer's Guide
-The Station object will launch a separate thread to communicate with Vicon. A Writer/Reader lock is used to synchronize data. The Station object is the writer and Sender objects are the readers who fetch raw data, a position (mm) and a quarternion encapsulated in a `mavlink_att_pos_mocap_t` object from the station. Since Vicon does not output velocities of objects, the Sender uses a linear Kalman filter to compute a `mavlink_local_position_ned_t` object with positions and velocities. The `GPS_HIL` data is then computed with the local position object. 
+The Station object will launch a separate thread to communicate with Vicon. A Writer/Reader lock is used to synchronize data. The Station object is the writer and Sender objects are the readers who fetch raw measurement from the station. The raw measurement includes position (unit: mm) and a quarternion encapsulated in a `mavlink_att_pos_mocap_t` object. Since Vicon does not output velocities of objects, the Sender uses a linear Kalman filter to compute a `mavlink_local_position_ned_t` object with positions and velocities. The `GPS_HIL` data is then computed with the local position object. 
 
 
 
