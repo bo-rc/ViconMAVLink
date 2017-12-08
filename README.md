@@ -13,7 +13,7 @@ As long as you have all required libraries added to the Qt project file. This ap
 # User's Guide
 You can run this app directly on the Vicon server computer or on any other computers as long as they are in the same network as the Vicon server computer. After you launch the application, the main window appears. 
 
-![main_window_start](figs/main_window_start.jpg)
+<img src="figs/main_window_start.jpg" width="600">
 
 The capture objects list is empty because you haven't connected to Vicon yet. 
 
@@ -23,13 +23,15 @@ The capture objects list is empty because you haven't connected to Vicon yet.
 
 __To connect to Vicon__: Click `Menu`->`Connect Vicon` then objects that are captured by Vicon will appear in the Captured Objects List.
 
-![main_window_connect](figs/main_window_connect.gif)
+<img src="figs/main_window_connect.gif" width="400">
 
 __To launch a sender for a robot__: Choose an object then Click `Start a MavLink Sender`. A Sender window will appear as the following:
-![sender_window_start](figs/main_window_start.jpg)
+
+<img src="figs/sender_window_start.jpg" width="600">
 
 __To stream positioning data to the robot__: 
-![sender_window_connect](figs/sender_window_connect.gif)
+
+<img src="figs/sender_window_connect.gif" width="400">
 
 You may launch multiple senders for a fleet of robots.
 
