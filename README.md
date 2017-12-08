@@ -1,5 +1,5 @@
 # ViconMAVLink
-ViconMAVLink is an application to provide indoor positioning for networked robots using Vicon motion capture measurements. It is primarily used in the [Intellegent Robotics Lab](robotics.illinois.edu) at the University of Illinois as a tool to simulate indoor GPS for Linux-based autonomous vehicles, such that you can operate autonomous vehicles indoors:
+ViconMAVLink is an application to provide indoor positioning for networked robots using Vicon motion capture measurements. It is primarily used in the [Intellegent Robotics Lab](http://robotics.illinois.edu) at the University of Illinois as a tool to simulate indoor GPS for Linux-based autonomous vehicles, such that you can operate autonomous vehicles indoors:
 
 _A fleet of UAVs flying with simulated GPS_:
 
