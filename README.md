@@ -25,15 +25,13 @@ __To connect to Vicon__: Click `Menu`->`Connect Vicon` then objects that are cap
 
 <img src="figs/main_window_connect.gif" width="400">
 
-__To launch a sender for a robot__: Choose an object then Click `Start a MavLink Sender`. A Sender window will appear as the following:
-
-<img src="figs/sender_window_start.jpg" width="600">
-
-__To stream positioning data to the robot__: 
+__To launch a sender for a robot__: Choose an object then Click `Start a MavLink Sender`, the Sender's window appears. After you start sending data, the `Rate` slider is still adjustable to change the sending rate on-the-fly.
 
 <img src="figs/sender_window_connect.gif" width="400">
 
-You may launch multiple senders for a fleet of robots.
+You may launch multiple senders for a fleet of robots:
+
+<img src="figs/fleet.gif" width="400">
 
 # Developer's Guide
 The Station object will launch a separate thread to communicate with Vicon. A Writer/Reader lock is used to synchronize data. The Station object is the writer and Sender objects are the readers who fetch raw measurement from the station. The raw measurement includes position (unit: mm) and a quarternion encapsulated in a `mavlink_att_pos_mocap_t` object. Since Vicon does not output velocities of objects, the Sender uses a linear Kalman filter to compute a `mavlink_local_position_ned_t` object with positions and velocities. The `GPS_HIL` data is then computed with the local position object. 
