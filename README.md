@@ -21,11 +21,7 @@ ViconMAVLink uses the following libraries:
 As long as you have all required libraries added to the Qt project file. This application can be built for multiple platforms in [QtCreator](https://www.qt.io/qt-features-libraries-apis-tools-and-ide/).
 
 # User's Guide
-You can run this app directly on the Vicon server computer or on any other computers as long as they are in the same network as the Vicon server computer. After you launch the application, the main window appears. 
-
-<img src="figs/main_window_start.jpg" width="600">
-
-The capture objects list is empty because you haven't connected to Vicon yet. 
+You can run this app directly on the Vicon server computer or on any other computers as long as they are in the same network as the Vicon server computer. After you launch the application, the main window will appear. But, the capture objects list is empty because you haven't connected to Vicon yet. 
 
 * The `HostAddress` is the IP address of the Vicon server computer. 
 * The `HostPort` usually is `801`. This is the port used by Vicon.
