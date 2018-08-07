@@ -16,7 +16,7 @@ ViconMAVLink uses the following libraries:
 * [Vicon DataStream SDK](https://www.vicon.com/products/software/datastream-sdk): to obtain real-time, high-precision positioning measurement for objects.
 * [MAVLink library](http://qgroundcontrol.org/mavlink/start): to encode/unpack UDP data with the MAVLink protocol.
 * [GeographicLib](https://geographiclib.sourceforge.io/): to convert positioning data between local coordinates and GPS locations.
-* [QT5](https://www.qt.io/) (core gui widgets network concurrent, also qwt): to provide a GUI, networking and multithreading.
+* [QT5](https://www.qt.io/) (core gui widgets network concurrent): to provide a GUI, networking and multithreading.
 
 As long as you have all required libraries added to the Qt project file. This application can be built for multiple platforms in [QtCreator](https://www.qt.io/qt-features-libraries-apis-tools-and-ide/).
 
