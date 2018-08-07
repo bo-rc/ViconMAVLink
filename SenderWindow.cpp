@@ -45,6 +45,10 @@ void SenderWindow::initialize()
     ui->gpsCheckBox->setChecked(controller->getUseGps());
     ui->localPosCheckBox->setChecked(controller->getUseLocPos());
     ui->viconCheckBox->setChecked(controller->getUseVicon());
+    ui->rateSlider->setTickPosition(QSlider::TicksBothSides);
+    ui->rateSlider->setMinimum(1);
+    ui->rateSlider->setMaximum(240);
+    ui->rateSlider->setSingleStep(1);
     ui->rateSlider->setValue(controller->getRate());
 
     auto r = ui->rateSlider->value();
@@ -57,7 +61,7 @@ void SenderWindow::initialize()
 
 void SenderWindow::setupConnections()
 {
-    connect(ui->rateSlider, &QwtSlider::sliderMoved,
+    connect(ui->rateSlider, &QSlider::sliderMoved,
 	    this, &SenderWindow::updateRateLabel);
     connect(ui->start, &QPushButton::released,
 	    this, &SenderWindow::startSenderHandler);

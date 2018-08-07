@@ -50,10 +50,6 @@ FORMS    += \
     StationWindow.ui \
     SenderWindow.ui
 
-win32: LIBS += -L$$PWD/'../../../../../Program Files (x86)/Vicon/DataStream SDK/Win32/CPP/' -lViconDataStreamSDK_CPP
-win32: INCLUDEPATH += $$PWD/'../../../../../Program Files (x86)/Vicon/DataStream SDK/Win32/CPP'
-win32: DEPENDPATH += $$PWD/'../../../../../Program Files (x86)/Vicon/DataStream SDK/Win32/CPP'
-
 unix:!macx: LIBS += -L$$PWD/../../../../usr/local/lib/Vicon/ -lViconDataStreamSDK_CPP
 unix:!macx: LIBS += -L$$PWD/../../../../usr/local/lib/Vicon/ -lboost_system
 unix:!macx: LIBS += -L$$PWD/../../../../usr/local/lib/Vicon/ -lboost_thread
@@ -66,7 +62,23 @@ unix:!macx: LIBS += -L$$PWD/../../../../usr/local/lib/GeographicLib/ -lGeographi
 INCLUDEPATH += $$PWD/../../../../usr/local/include
 DEPENDPATH += $$PWD/../../../../usr/local/include
 
-unix:!macx: LIBS += -L$$PWD/../../../../usr/lib/ -lqwt-qt5
+INCLUDEPATH += $$PWD/../../../../../include/
+DEPENDPATH += $$PWD/../../../../../include/
 
-INCLUDEPATH += $$PWD/../../../../usr/include/qwt
-DEPENDPATH += $$PWD/../../../../usr/include/qwt
+DEFINES += GEOGRAPHICLIB_SHARED_LIB=0
+
+win32: LIBS += -L$$PWD/../../../../../pkg-vc12-x64/GeographicLib-1.49/lib/ -lGeographic
+
+INCLUDEPATH += $$PWD/../../../../../pkg-vc12-x64/GeographicLib-1.49/include
+DEPENDPATH += $$PWD/../../../../../pkg-vc12-x64/GeographicLib-1.49/include
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../../pkg-vc12-x64/GeographicLib-1.49/lib/Geographic.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/../../../../../pkg-vc12-x64/GeographicLib-1.49/lib/libGeographic.a
+
+win32: LIBS += -L$$PWD/'../../../../../Program Files/Vicon/DataStream SDK/Win64/CPP/' -lViconDataStreamSDK_CPP
+
+INCLUDEPATH += $$PWD/'../../../../../Program Files/Vicon/DataStream SDK/Win64/CPP'
+DEPENDPATH += $$PWD/'../../../../../Program Files/Vicon/DataStream SDK/Win64/CPP'
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/'../../../../../Program Files/Vicon/DataStream SDK/Win64/CPP/ViconDataStreamSDK_CPP.lib'
+else:win32-g++: PRE_TARGETDEPS += $$PWD/'../../../../../Program Files/Vicon/DataStream SDK/Win64/CPP/libViconDataStreamSDK_CPP.a'

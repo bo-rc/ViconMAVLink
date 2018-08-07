@@ -28,9 +28,9 @@
 #ifdef WIN32
 #include <Windows.h>
 #else
+#include <unistd.h>
 #endif
 #include <utility>
-#include <unistd.h>
 #include <set>
 #include <algorithm>
 #include <iterator>
