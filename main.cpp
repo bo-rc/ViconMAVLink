@@ -14,17 +14,19 @@
  * @author  Bo Liu  <boliu1@illinois.edu>
  *
  */
-#include "StationWindow.h"
+#include <memory>
 #include <QApplication>
+#include "StationWindow.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
-    std::unique_ptr<Station> station { new Station };
-    std::unique_ptr<StationController> controller{ new StationController(station) };
-    std::unique_ptr<StationWindow> w { new StationWindow(controller) };
-    w->show();
+    auto station = std::make_unique<Station>();
+    auto controller = std::make_unique<StationController>(station);
+    auto mainWindow = std::make_unique<StationWindow>(controller);
 
-    return a.exec();
+    mainWindow->show();
+
+    return app.exec();
 }

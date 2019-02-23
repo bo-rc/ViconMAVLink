@@ -22,20 +22,20 @@
 #ifndef SENDERCONTROLLER_H
 #define SENDERCONTROLLER_H
 
+#include <memory>
 #include <QObject>
 #include <QTimer>
 #include "Sender.h"
-#include <memory>
 
 class SenderController : public QObject
 {
     Q_OBJECT
-public:
-    explicit SenderController(std::unique_ptr<Sender>& sender, QObject *parent = 0);
+  public:
+    explicit SenderController(std::unique_ptr<Sender> &sender, QObject *parent = 0);
 
-signals:
+  signals:
 
-public slots:
+  public slots:
     QHostAddress getRemoteAddress() const;
     quint16 getRemotePort() const;
     uint8_t getSysID() const;
@@ -53,13 +53,13 @@ public slots:
     void setUseLocPos(bool use);
     void setSysID(uint8_t id);
     void setCompID(uint8_t id);
-    void setRemoteAddress(const QString& ip);
+    void setRemoteAddress(const QString &ip);
     void setRemotePort(quint16 port);
     void timerHandler();
     void updateMeasDisplay();
 
-private:
-    std::unique_ptr<Sender>& sender;
+  private:
+    std::unique_ptr<Sender> &sender;
     void initialize();
     void setupConnections();
     QTimer timer;

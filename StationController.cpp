@@ -22,9 +22,8 @@
  */
 #include "StationController.h"
 
-StationController::StationController(std::unique_ptr<Station> &station, QObject *parent) :
-    QObject(parent),
-    station(station)
+StationController::StationController(std::unique_ptr<Station> &station, QObject *parent) : QObject(parent),
+                                                                                           station(station)
 {
     setupConnections();
     initialize();
@@ -33,15 +32,15 @@ StationController::StationController(std::unique_ptr<Station> &station, QObject 
 void StationController::setupConnections()
 {
     connect(station.get(), &Station::droneAdded,
-	    this, &StationController::addDrone);
+            this, &StationController::addDrone);
     connect(station.get(), &Station::droneRemoved,
-	    this, &StationController::removeDrone);
+            this, &StationController::removeDrone);
     connect(station.get(), &Station::dtUpdated,
-	    this, &StationController::dtUpdatedHandler);
+            this, &StationController::dtUpdatedHandler);
     connect(station.get(), &Station::ViconConnected,
-	    this, &StationController::viconConnectedHandler);
+            this, &StationController::viconConnectedHandler);
     connect(station.get(), &Station::ViconDisconnected,
-	    this, &StationController::viconDisconnectedHandler);
+            this, &StationController::viconDisconnectedHandler);
     connect(&dtUpdateTimer, SIGNAL(timeout()), this, SLOT(dtUpdatedHandler()));
 }
 
@@ -83,9 +82,9 @@ void StationController::setHostPort(quint16 hport)
 std::vector<QString> StationController::getTrackingObjectNames()
 {
     std::vector<QString> names;
-    for (const auto& x : station->droneCollection)
+    for (const auto &x : station->droneCollection)
     {
-	names.push_back(x.getName());
+        names.push_back(x.getName());
     }
 
     return names;
@@ -94,10 +93,9 @@ std::vector<QString> StationController::getTrackingObjectNames()
 QString StationController::getOriginGPS()
 {
     return station->getOriginGPS();
-
 }
 
-void StationController::setOriginGPS(const QString& q_gps)
+void StationController::setOriginGPS(const QString &q_gps)
 {
     station->setOriginGPS(q_gps);
 }

@@ -33,10 +33,9 @@
 #include <QMessageBox>
 #include <QDebug>
 
-StationWindow::StationWindow(std::unique_ptr<StationController> &controller, QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::StationWindow),
-    controller(controller)
+StationWindow::StationWindow(std::unique_ptr<StationController> &controller, QWidget *parent) : QMainWindow(parent),
+                                                                                                ui(new Ui::StationWindow),
+                                                                                                controller(controller)
 {
     ui->setupUi(this);
     setupConnections();
@@ -48,17 +47,20 @@ StationWindow::~StationWindow()
     delete ui;
 }
 
-void StationWindow::closeEvent (QCloseEvent *event)
+void StationWindow::closeEvent(QCloseEvent *event)
 {
-    QMessageBox::StandardButton resBtn = QMessageBox::question( this, "ViconStation",
-								tr("Are you sure?\n"),
-								QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
-								QMessageBox::Yes);
-    if (resBtn != QMessageBox::Yes) {
-	event->ignore();
-    } else {
-	event->accept();
-	qApp->quit();
+    QMessageBox::StandardButton resBtn = QMessageBox::question(this, "ViconStation",
+                                                               tr("Are you sure?\n"),
+                                                               QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
+                                                               QMessageBox::Yes);
+    if (resBtn != QMessageBox::Yes)
+    {
+        event->ignore();
+    }
+    else
+    {
+        event->accept();
+        qApp->quit();
     }
 }
 
@@ -74,24 +76,24 @@ void StationWindow::initialize()
 void StationWindow::setupConnections()
 {
     connect(ui->actionConnect_Vicon, &QAction::triggered,
-	    this, &StationWindow::launchViconStream);
+            this, &StationWindow::launchViconStream);
     connect(ui->actionDisconnect_Vicon, &QAction::triggered,
-	    this, &StationWindow::stopViconStream);
+            this, &StationWindow::stopViconStream);
     connect(ui->actionQuit, &QAction::triggered,
-	   this, &QApplication::quit);
+            this, &QApplication::quit);
 
     connect(ui->startMavLinkSenderButton, &QPushButton::released,
-	    this, &StationWindow::startSenderHandler);
+            this, &StationWindow::startSenderHandler);
     connect(controller.get(), &StationController::droneNameAdded,
-	    this, &StationWindow::addName);
+            this, &StationWindow::addName);
     connect(controller.get(), &StationController::droneNameRemoved,
-	    this, &StationWindow::removeName);
+            this, &StationWindow::removeName);
     connect(controller.get(), &StationController::viconConnected,
-	    this, &StationWindow::setOnline);
+            this, &StationWindow::setOnline);
     connect(controller.get(), &StationController::viconDisconnected,
-	    this, &StationWindow::setOffline);
+            this, &StationWindow::setOffline);
     connect(controller.get(), &StationController::dtUpdated,
-	    this, &StationWindow::updatedt);
+            this, &StationWindow::updatedt);
 }
 
 void StationWindow::launchViconStream()
@@ -128,32 +130,30 @@ void StationWindow::removeName(QString name)
 {
     qDebug() << "removing drone from UI" << name;
     auto items = ui->listWidget->findItems(name, Qt::MatchCaseSensitive);
-    for(auto& item : items)
+    for (auto &item : items)
     {
-	ui->listWidget->removeItemWidget(item);
-	delete item;
+        ui->listWidget->removeItemWidget(item);
+        delete item;
     }
 }
 
 void StationWindow::startSenderHandler()
 {
     auto item = ui->listWidget->currentItem();
-    if (!item) {
-	QMessageBox msgBox;
-	msgBox.setText("Please select an object first!");
-	msgBox.exec();
-	return;
+    if (!item)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Please select an object first!");
+        msgBox.exec();
+        return;
     }
 
     QString name = item->text();
     qDebug() << "launch a MavLink sender: " << name;
 
-    std::unique_ptr<Sender> sender { new Sender(name, controller->getStation()) };
-    senders[name] = std::move(sender);
-    std::unique_ptr<SenderController> senderController {new SenderController(senders[name]) };
-    senderControllers[name] = std::move(senderController);
-    std::unique_ptr<SenderWindow> w { new SenderWindow(name, senderControllers[name]) };
-    senderWindows[name] = std::move(w);
+    senders[name] = std::make_unique<Sender>(name, controller->getStation());
+    senderControllers[name] = std::make_unique<SenderController>(senders[name]);
+    senderWindows[name] = std::make_unique<SenderWindow>(name, senderControllers[name]);
 
     senderWindows[name]->show();
 
@@ -161,13 +161,13 @@ void StationWindow::startSenderHandler()
     qDebug() << "Station now has " << senders.size() << " sender windows.";
 
     connect(senderWindows[name].get(), &SenderWindow::closeSelf,
-	    this, &StationWindow::senderWindowCloseHandler);
+            this, &StationWindow::senderWindowCloseHandler);
 }
 
 void StationWindow::updatedt(double dt)
 {
     QString qdt("dt = ");
-    qdt = qdt + QString::number(int(dt*1000)) + QString(" ms");
+    qdt = qdt + QString::number(int(dt * 1000)) + QString(" ms");
     ui->dtLabel->setText(qdt);
 }
 
@@ -176,9 +176,9 @@ void StationWindow::senderWindowCloseHandler(const QString &name)
     auto it = senderWindows.find(name);
     if (it != std::end(senderWindows))
     {
-	qDebug() << " sender window for: " << name << " closed.";
-	senderWindows.erase(it);
-	qDebug() << "Station has " << senderWindows.size() << " sender windows.";
+        qDebug() << " sender window for: " << name << " closed.";
+        senderWindows.erase(it);
+        qDebug() << "Station has " << senderWindows.size() << " sender windows.";
     }
 
     auto it_c = senderControllers.find(name);
@@ -206,15 +206,13 @@ void StationWindow::setNorth(const QString &axis)
 {
     auto index = ui->NorthMapComboBox->findText(axis);
     if (index != -1)
-	ui->NorthMapComboBox->setCurrentIndex(index);
+        ui->NorthMapComboBox->setCurrentIndex(index);
 }
 
-void StationWindow::setLabelColor(QLabel * label, QColor color)
+void StationWindow::setLabelColor(QLabel *label, QColor color)
 {
     QPalette palette;
     palette.setColor(QPalette::Window, Qt::blue);
     palette.setColor(QPalette::WindowText, color);
     label->setPalette(palette);
 }
-
-

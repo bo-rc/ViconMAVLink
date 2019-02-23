@@ -23,22 +23,22 @@
 #ifndef STATION_H
 #define STATION_H
 
+#include <iostream>
 #include <QObject>
 #include <QString>
 #include <QHostAddress>
 #include <QMap>
 #include <QList>
-#include "DataStreamClient.h"
-#include <iostream>
-#include "Drone.h"
 #include <QReadWriteLock>
 #include <QtConcurrent/QtConcurrent>
 #include <GeographicLib/LocalCartesian.hpp>
+#include "DataStreamClient.h"
+#include "Drone.h"
 
 class Station : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit Station(QObject *parent = 0);
     virtual ~Station();
 
@@ -54,13 +54,13 @@ public:
     void connectVicon();
     void disconnectVicon();
 
-    void addDrone(const QString& name, double x, double y, double z,
+    void addDrone(const QString &name, double x, double y, double z,
                   double q_0, double q_1, double q_2, double q_3);
 
-    void addDrone(const QString& name);
-    mavlink_vicon_position_estimate_t getViconMeas(const QString& name);
+    void addDrone(const QString &name);
+    mavlink_vicon_position_estimate_t getViconMeas(const QString &name);
 
-    void removeDrone(const QString& name);
+    void removeDrone(const QString &name);
 
     void dataStream();
 
@@ -80,18 +80,18 @@ public:
     long long getFrame() const;
     void setFrame(long long value);
 
-    mavlink_att_pos_mocap_t getMeas(const QString &name, long long& frame);
+    mavlink_att_pos_mocap_t getMeas(const QString &name, long long &frame);
 
-signals:
+  signals:
     void ViconConnected();
     void ViconDisconnected();
     void droneAdded(QString name);
     void droneRemoved(QString name);
     void dtUpdated(double dt);
 
-public slots:
+  public slots:
 
-private:
+  private:
     double dt; // seconds/frame
     long long frame;
     double rate;
@@ -105,11 +105,12 @@ private:
 
     QHostAddress hostAddress;
     quint16 hostPort;
-    struct originGPS {
-	double lat;
-	double lon;
-	double alt;
-	GeographicLib::LocalCartesian gps_to_local;
+    struct originGPS
+    {
+        double lat;
+        double lon;
+        double alt;
+        GeographicLib::LocalCartesian gps_to_local;
     } originGPS;
 
     QString north;
@@ -122,8 +123,7 @@ private:
     void initialize();
 
     // helpers
-    QString _Adapt( const ViconDataStreamSDK::CPP::Direction::Enum i_Direction );
-
+    QString _Adapt(const ViconDataStreamSDK::CPP::Direction::Enum i_Direction);
 };
 
 #endif // STATION_H

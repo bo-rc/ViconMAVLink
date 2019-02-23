@@ -32,7 +32,8 @@
 #include "Sender.h"
 #include <memory>
 
-namespace Ui {
+namespace Ui
+{
 class StationWindow; // hidden class: builder for ui
 }
 
@@ -40,15 +41,15 @@ class StationWindow : public QMainWindow
 {
     Q_OBJECT
 
-public:
-    explicit StationWindow(std::unique_ptr<StationController>& controller, QWidget *parent = 0);
+  public:
+    explicit StationWindow(std::unique_ptr<StationController> &controller, QWidget *parent = 0);
     ~StationWindow();
-    void closeEvent (QCloseEvent *event) override;
-    void senderWindowCloseHandler(const QString& name);
+    void closeEvent(QCloseEvent *event) override;
+    void senderWindowCloseHandler(const QString &name);
 
-signals:
+  signals:
 
-public slots:
+  public slots:
     void launchViconStream();
     void stopViconStream();
     void addName(QString name);
@@ -58,9 +59,9 @@ public slots:
     void setOnline();
     void setOffline();
 
-private:
+  private:
     Ui::StationWindow *ui;
-    std::unique_ptr<StationController>& controller;
+    std::unique_ptr<StationController> &controller;
 
     void initialize();
     void setupConnections();
@@ -70,10 +71,9 @@ private:
     std::map<QString, std::unique_ptr<Sender>> senders;
 
     // helpers
-    void setLabelColor(QLabel*, QColor);
+    void setLabelColor(QLabel *, QColor);
 
-
-    void setNorth(const QString& axis);
+    void setNorth(const QString &axis);
 };
 
 #endif // STATIONWINDOW_H

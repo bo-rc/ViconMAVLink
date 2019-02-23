@@ -22,15 +22,15 @@
 #include "Sender.h"
 #include <cmath>
 #include <chrono>
-using Eigen::VectorXd;
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
 Sender::Sender(const QString &name, std::unique_ptr<Station> &station, QObject *parent) : QObject(parent),
-    isInitialized {false},
-    isRunning {false},
-    station {station},
-    name {name},
-    udpSocket { new QUdpSocket(this)}
+                                                                                          isInitialized{false},
+                                                                                          isRunning{false},
+                                                                                          station{station},
+                                                                                          name{name},
+                                                                                          udpSocket{new QUdpSocket(this)}
 {
     initialize();
     setupConnections();
@@ -45,7 +45,7 @@ Sender::~Sender()
 void Sender::setupConnections()
 {
     connect(&timer, SIGNAL(timeout()),
-	    this, SLOT(timerHandler()));
+            this, SLOT(timerHandler()));
 }
 
 void Sender::start()
@@ -80,42 +80,42 @@ void Sender::initialize()
 void Sender::init_KF()
 {
     VectorXd x_in(6);
-    x_in << viconEstMsg.x/1000.0, viconEstMsg.y/1000.0, viconEstMsg.z/1000.0,
-	    0.0, 0.0, 0.0;
+    x_in << viconEstMsg.x / 1000.0, viconEstMsg.y / 1000.0, viconEstMsg.z / 1000.0,
+        0.0, 0.0, 0.0;
 
-    MatrixXd P_in(6,6);
+    MatrixXd P_in(6, 6);
     P_in << 0.1, 0, 0, 0, 0, 0,
-	    0, 0.1, 0, 0, 0, 0,
-	    0, 0, 0.1, 0, 0, 0,
-	    0, 0, 0, 10., 0, 0,
-	    0, 0, 0, 0, 10., 0,
-	    0, 0, 0, 0, 0, 10.;
+        0, 0.1, 0, 0, 0, 0,
+        0, 0, 0.1, 0, 0, 0,
+        0, 0, 0, 10., 0, 0,
+        0, 0, 0, 0, 10., 0,
+        0, 0, 0, 0, 0, 10.;
 
-    MatrixXd F_in(6,6);
+    MatrixXd F_in(6, 6);
     F_in << 1, 0, 0, dt, 0, 0,
-	    0, 1, 0, 0, dt, 0,
-	    0, 0, 1, 0, 0, dt,
-	    0, 0, 0, 1, 0, 0,
-	    0, 0, 0, 0, 1, 0,
-	    0, 0, 0, 0, 0, 1;
+        0, 1, 0, 0, dt, 0,
+        0, 0, 1, 0, 0, dt,
+        0, 0, 0, 1, 0, 0,
+        0, 0, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 1;
 
-    MatrixXd Q_in(6,6);
+    MatrixXd Q_in(6, 6);
     Q_in << 1, 0, 0, 1, 0, 0,
-	    0, 1, 0, 0, 1, 0,
-	    0, 0, 1, 0, 0, 1,
-	    1, 0, 0, 1, 0, 0,
-	    0, 1, 0, 0, 1, 0,
-	    0, 0, 1, 0, 0, 1;
+        0, 1, 0, 0, 1, 0,
+        0, 0, 1, 0, 0, 1,
+        1, 0, 0, 1, 0, 0,
+        0, 1, 0, 0, 1, 0,
+        0, 0, 1, 0, 0, 1;
 
-    MatrixXd H_in(3,6);
+    MatrixXd H_in(3, 6);
     H_in << 1, 0, 0, 0, 0, 0,
-	    0, 1, 0, 0, 0, 0,
-	    0, 0, 1, 0, 0, 0;
+        0, 1, 0, 0, 0, 0,
+        0, 0, 1, 0, 0, 0;
 
-    MatrixXd R_in(3,3);
+    MatrixXd R_in(3, 3);
     R_in << 0.01, 0, 0,
-	    0, 0.01, 0,
-	    0, 0, 0.01;
+        0, 0.01, 0,
+        0, 0, 0.01;
 
     kf.init(x_in, P_in, F_in, Q_in, H_in, R_in);
 }
@@ -123,15 +123,16 @@ void Sender::init_KF()
 void Sender::updateTimer(uint8_t r)
 {
     rate = r;
-    if (isRunning) {
-	stopTimer();
-	startTimer(rate);
+    if (isRunning)
+    {
+        stopTimer();
+        startTimer(rate);
     }
 }
 
 void Sender::startTimer(uint8_t rate)
 {
-    auto msecTime = 1.0/rate * 1000;
+    auto msecTime = 1.0 / rate * 1000;
     timer.start(msecTime);
     isRunning = true;
 }
@@ -244,10 +245,10 @@ void Sender::updateMeas()
 
     if (!isInitialized)
     {
-	viconEstMsg = station->getMeas(name, frame);
-	dt = 1.0/rate;
-	isInitialized = true;
-	return;
+        viconEstMsg = station->getMeas(name, frame);
+        dt = 1.0 / rate;
+        isInitialized = true;
+        return;
     }
 
     // update frame number and measurement
@@ -257,14 +258,14 @@ void Sender::updateMeas()
     // update dt
     if (frame > prev_frame)
     {
-	dt = (frame - prev_frame) / station->getRate();
+        dt = (frame - prev_frame) / station->getRate();
     }
     else
     {
-	dt = 1.0/rate;
+        dt = 1.0 / rate;
     }
 
-    qDebug() << "updating Vicon, time: " << ustime << " dt = "<< dt;
+    qDebug() << "updating Vicon, time: " << ustime << " dt = " << dt;
     qDebug() << "Vicon pos:" << viconEstMsg.x << "," << viconEstMsg.y << "," << viconEstMsg.z;
 }
 
@@ -276,8 +277,8 @@ void Sender::updateLocPosFromMeas()
     kf.predict();
     VectorXd z(3);
     z << viconEstMsg.x / 1000.0,
-	 viconEstMsg.y / 1000.0,
-	 viconEstMsg.z / 1000.0; // unit is meter
+        viconEstMsg.y / 1000.0,
+        viconEstMsg.z / 1000.0; // unit is meter
     kf.update(z);
     locPosMsg.x = kf.x_[0];
     locPosMsg.y = kf.x_[1];
@@ -288,11 +289,11 @@ void Sender::updateLocPosFromMeas()
 
     qDebug() << "updateing locPos";
     qDebug() << "locPos state vector: " << locPosMsg.x << ","
-					<< locPosMsg.y << ","
-					<< locPosMsg.z << ","
-					<< locPosMsg.vx << ","
-					<< locPosMsg.vy << ","
-					<< locPosMsg.vz;
+             << locPosMsg.y << ","
+             << locPosMsg.z << ","
+             << locPosMsg.vx << ","
+             << locPosMsg.vy << ","
+             << locPosMsg.vz;
 }
 
 /* call this function after calling updateLocPosFromMeas() */
@@ -306,20 +307,19 @@ void Sender::updateGpsFromeLocPos()
     double groundSpeed = sqrt(pow(locPosMsg.vx, 2) + pow(locPosMsg.vy, 2));
     double courseOverGround = atan(locPosMsg.vy / locPosMsg.vx) * 180 / M_PI;
 
-    gpsMsg.time_usec = ustime; // in microsecond
-    gpsMsg.lat = lat * 10000000;	// [degrees * 1E7]
-    gpsMsg.lon = lon * 10000000;	// [degrees * 1E7]
-    gpsMsg.alt = alt * 1000;			// [m * 1000] AMSL
-    gpsMsg.vel = groundSpeed * 100;		// [cm/s]
-    gpsMsg.vn = locPosMsg.vx * 100;					// [cm/s]
-    gpsMsg.ve = locPosMsg.vy * 100;					// [cm/s]
-    gpsMsg.vd = locPosMsg.vz * 100;					// [cm/s]
-    gpsMsg.cog = courseOverGround * 100;			// [degrees * 100]
-    gpsMsg.eph = 0.01; // <1: ideal
-    gpsMsg.epv = 0.01; // <1: ideal
+    gpsMsg.time_usec = ustime;           // in microsecond
+    gpsMsg.lat = lat * 10000000;         // [degrees * 1E7]
+    gpsMsg.lon = lon * 10000000;         // [degrees * 1E7]
+    gpsMsg.alt = alt * 1000;             // [m * 1000] AMSL
+    gpsMsg.vel = groundSpeed * 100;      // [cm/s]
+    gpsMsg.vn = locPosMsg.vx * 100;      // [cm/s]
+    gpsMsg.ve = locPosMsg.vy * 100;      // [cm/s]
+    gpsMsg.vd = locPosMsg.vz * 100;      // [cm/s]
+    gpsMsg.cog = courseOverGround * 100; // [degrees * 100]
+    gpsMsg.eph = 0.01;                   // <1: ideal
+    gpsMsg.epv = 0.01;                   // <1: ideal
     gpsMsg.fix_type = 3;
     gpsMsg.satellites_visible = 10;
-
 
     qDebug() << "updating GPS";
     qDebug() << "GPS time: " << gpsMsg.time_usec;
@@ -332,37 +332,40 @@ void Sender::sendDatagram()
     uint8_t len = 0;
     constexpr int BUFSIZE = 512;
 
-    if (useLocPos) {
-	qDebug() << "sending locPos";
-	mavlink_message_t msg_loc;
-	uint8_t send_buf_loc[BUFSIZE];
-	memset(send_buf_loc, 0, BUFSIZE);
+    if (useLocPos)
+    {
+        qDebug() << "sending locPos";
+        mavlink_message_t msg_loc;
+        uint8_t send_buf_loc[BUFSIZE];
+        memset(send_buf_loc, 0, BUFSIZE);
 
-	mavlink_msg_local_position_ned_encode(sysid, compid, &msg_loc, &locPosMsg);
-	len = mavlink_msg_to_send_buffer(send_buf_loc, &msg_loc);
-	qDebug() << "sending to " << remoteAddress << "," << remotePort;
-	udpSocket->writeDatagram(reinterpret_cast<const char*>(send_buf_loc), len, remoteAddress, remotePort);
+        mavlink_msg_local_position_ned_encode(sysid, compid, &msg_loc, &locPosMsg);
+        len = mavlink_msg_to_send_buffer(send_buf_loc, &msg_loc);
+        qDebug() << "sending to " << remoteAddress << "," << remotePort;
+        udpSocket->writeDatagram(reinterpret_cast<const char *>(send_buf_loc), len, remoteAddress, remotePort);
     }
 
-    if (useGPS) {
-	qDebug() << "sending GPS";
-	mavlink_message_t msg_gps;
-	uint8_t send_buf_gps[BUFSIZE];
-	memset(send_buf_gps, 0, BUFSIZE);
+    if (useGPS)
+    {
+        qDebug() << "sending GPS";
+        mavlink_message_t msg_gps;
+        uint8_t send_buf_gps[BUFSIZE];
+        memset(send_buf_gps, 0, BUFSIZE);
 
-	mavlink_msg_hil_gps_encode(sysid, compid, &msg_gps, &gpsMsg);
-	len = mavlink_msg_to_send_buffer(send_buf_gps, &msg_gps);
-	udpSocket->writeDatagram(reinterpret_cast<const char*>(send_buf_gps), len, remoteAddress, remotePort);
+        mavlink_msg_hil_gps_encode(sysid, compid, &msg_gps, &gpsMsg);
+        len = mavlink_msg_to_send_buffer(send_buf_gps, &msg_gps);
+        udpSocket->writeDatagram(reinterpret_cast<const char *>(send_buf_gps), len, remoteAddress, remotePort);
     }
 
-    if (useViconEst) {
-	qDebug() << "sending Vicon";
-	mavlink_message_t msg_mocap;
-	uint8_t send_buf_mocap[BUFSIZE];
-	memset(send_buf_mocap, 0, BUFSIZE);
+    if (useViconEst)
+    {
+        qDebug() << "sending Vicon";
+        mavlink_message_t msg_mocap;
+        uint8_t send_buf_mocap[BUFSIZE];
+        memset(send_buf_mocap, 0, BUFSIZE);
 
-	mavlink_msg_att_pos_mocap_encode(sysid, compid, &msg_mocap, &viconEstMsg);
-	len = mavlink_msg_to_send_buffer(send_buf_mocap, &msg_mocap);
-	udpSocket->writeDatagram(reinterpret_cast<const char*>(send_buf_mocap), len, remoteAddress, remotePort);
+        mavlink_msg_att_pos_mocap_encode(sysid, compid, &msg_mocap, &viconEstMsg);
+        len = mavlink_msg_to_send_buffer(send_buf_mocap, &msg_mocap);
+        udpSocket->writeDatagram(reinterpret_cast<const char *>(send_buf_mocap), len, remoteAddress, remotePort);
     }
 }

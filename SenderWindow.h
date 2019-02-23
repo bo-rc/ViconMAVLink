@@ -24,10 +24,11 @@
 
 #include <QWidget>
 #include <QCloseEvent>
-#include "SenderController.h"
 #include <QLabel>
+#include "SenderController.h"
 
-namespace Ui {
+namespace Ui
+{
 class SenderWindow;
 }
 
@@ -35,36 +36,36 @@ class SenderWindow : public QWidget
 {
     Q_OBJECT
 
-public:
-    explicit SenderWindow(const QString& name,
-			  std::unique_ptr<SenderController>& controller,
-			  QWidget *parent = 0);
-    void closeEvent(QCloseEvent * event) override;
+  public:
+    explicit SenderWindow(const QString &name,
+                          std::unique_ptr<SenderController> &controller,
+                          QWidget *parent = 0);
+    void closeEvent(QCloseEvent *event) override;
     ~SenderWindow();
     void setStandBy();
     void setActive();
 
-signals:
-    void closeSelf(const QString& name);
+  signals:
+    void closeSelf(const QString &name);
     void senderStarted();
     void senderStopped();
     void rateChanged();
 
-public slots:
+  public slots:
     void updateRateLabel();
     void startSenderHandler();
     void stopSenderHandler();
 
-private:
+  private:
     Ui::SenderWindow *ui;
     QString name;
-    std::unique_ptr<SenderController>& controller;
+    std::unique_ptr<SenderController> &controller;
 
     void initialize();
     void setupConnections();
 
     // helpers
-    void setLabelColor(QLabel * label, QColor color);
+    void setLabelColor(QLabel *label, QColor color);
 };
 
 #endif // SENDERWINDOW_H

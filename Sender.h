@@ -22,19 +22,19 @@
 #ifndef SENDER_H
 #define SENDER_H
 
+#include <memory>
 #include <QObject>
 #include <QUdpSocket>
 #include <QDateTime>
 #include <lib/MAVLink2/common/mavlink.h>
 #include <Station.h>
 #include "KalmanFilter.h"
-#include <memory>
 
 class Sender : public QObject
 {
     Q_OBJECT
-public:
-    explicit Sender(const QString& name, std::unique_ptr<Station>& station, QObject *parent = 0);
+  public:
+    explicit Sender(const QString &name, std::unique_ptr<Station> &station, QObject *parent = 0);
     ~Sender();
     void initialize();
     void setupConnections();
@@ -65,22 +65,22 @@ public:
     void setUseLocPos(bool use);
     void setSysID(uint8_t id);
     void setCompID(uint8_t id);
-    void setRemoteAddress(const QString& ip);
+    void setRemoteAddress(const QString &ip);
     void setRemotePort(quint16 port);
 
-signals:
+  signals:
     void measUpdated();
 
-public slots:
+  public slots:
     void timerHandler();
 
-private:
+  private:
     KalmanFilter kf;
 
     bool isInitialized;
     bool isRunning;
 
-    std::unique_ptr<Station>& station;
+    std::unique_ptr<Station> &station;
     double dt; // seconds/frame
     long long frame;
 
@@ -107,10 +107,10 @@ private:
 
     QHostAddress remoteAddress;
     quint16 remotePort;
-    QUdpSocket* udpSocket;
+    QUdpSocket *udpSocket;
 
     //helpers
-    mavlink_hil_gps_t locPos_to_gpsHIL(const mavlink_local_position_ned_t& locPos);
+    mavlink_hil_gps_t locPos_to_gpsHIL(const mavlink_local_position_ned_t &locPos);
     void init_KF();
 };
 

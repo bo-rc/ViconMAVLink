@@ -16,24 +16,13 @@
  */
 #include "Drone.h"
 
-Drone::Drone()
-{
-
-}
-
-Drone::Drone(QString droneName)
-{
-    name = droneName;
-}
-
-Drone::~Drone()
+Drone::Drone(QString droneName) : name(droneName)
 {
     // nothing to do
 }
 
-Drone::Drone(QString droneName, double x, double y, double z, double q_0, double q_1, double q_2, double q_3)
+Drone::Drone(QString droneName, double x, double y, double z, double q_0, double q_1, double q_2, double q_3) : name(droneName)
 {
-    name = droneName;
     pos.x = x;
     pos.y = y;
     pos.z = z;
@@ -53,15 +42,15 @@ void Drone::setName(const QString &value)
     name = value;
 }
 
-mavlink_att_pos_mocap_t Drone::getPos(long long& ret_frame) const
-{
-    ret_frame = frame;
-    return pos;
-}
-
 mavlink_att_pos_mocap_t Drone::getPos() const
 {
     return pos;
+}
+
+mavlink_att_pos_mocap_t Drone::getPos(long long &ret_frame) const
+{
+    ret_frame = frame;
+    return getPos();
 }
 
 void Drone::setPos(const mavlink_att_pos_mocap_t &value)
@@ -84,10 +73,12 @@ void Drone::reset()
 
 long long Drone::getTime() const
 {
+    // use frame number as time
     return frame;
 }
 
 void Drone::setTime(long long value)
 {
+    // use frame number as time
     frame = value;
 }

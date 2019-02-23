@@ -19,7 +19,8 @@
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-KalmanFilter::KalmanFilter(QObject *parent) : QObject(parent)
+KalmanFilter::KalmanFilter(QObject *parent) : 
+    QObject(parent)
 {
     // nothing to do
 }
@@ -28,7 +29,7 @@ void KalmanFilter::update_dt(double dt)
 {
     F_(0,3) = dt;
     F_(1,4) = dt;
-    F_(2, 5) = dt;
+    F_(2,5) = dt;
 }
 
 void KalmanFilter::init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in, MatrixXd &Q_in,

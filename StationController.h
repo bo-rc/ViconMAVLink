@@ -32,8 +32,8 @@
 class StationController : public QObject
 {
     Q_OBJECT
-public:
-    explicit StationController(std::unique_ptr<Station>& station, QObject *parent = 0);
+  public:
+    explicit StationController(std::unique_ptr<Station> &station, QObject *parent = 0);
     void connectVicon();
     void disconnectVicon();
 
@@ -48,24 +48,24 @@ public:
     void setHostAddress(QString ip);
     void setHostPort(quint16 hport);
     void setOriginGPS(const QString &q_gps);
-    void setNorth(const QString& axis);
+    void setNorth(const QString &axis);
 
-signals:
+  signals:
     void droneNameAdded(QString name);
     void droneNameRemoved(QString name);
     void viconConnected();
     void viconDisconnected();
     void dtUpdated(double dt);
 
-public slots:
+  public slots:
     void addDrone(QString name);
     void removeDrone(QString name);
     void viconConnectedHandler();
     void viconDisconnectedHandler();
     void dtUpdatedHandler();
 
-private:
-    std::unique_ptr<Station>& station;
+  private:
+    std::unique_ptr<Station> &station;
     void initialize();
     void setupConnections();
     QTimer dtUpdateTimer;

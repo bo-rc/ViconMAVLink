@@ -24,11 +24,10 @@
 #include <math.h>
 #include <QMessageBox>
 
-SenderWindow::SenderWindow(const QString& name, std::unique_ptr<SenderController> &controller, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::SenderWindow),
-    name(name),
-    controller(controller)
+SenderWindow::SenderWindow(const QString &name, std::unique_ptr<SenderController> &controller, QWidget *parent) : QWidget(parent),
+                                                                                                                  ui(new Ui::SenderWindow),
+                                                                                                                  name(name),
+                                                                                                                  controller(controller)
 {
     ui->setupUi(this);
     setupConnections();
@@ -52,7 +51,7 @@ void SenderWindow::initialize()
     ui->rateSlider->setValue(controller->getRate());
 
     auto r = ui->rateSlider->value();
-    auto rate = 2 * floor(r/2);
+    auto rate = 2 * floor(r / 2);
     auto str = QString("Rate: ");
     str += QString::number(rate);
     str += QString(" Hz");
@@ -62,11 +61,11 @@ void SenderWindow::initialize()
 void SenderWindow::setupConnections()
 {
     connect(ui->rateSlider, &QSlider::sliderMoved,
-	    this, &SenderWindow::updateRateLabel);
+            this, &SenderWindow::updateRateLabel);
     connect(ui->start, &QPushButton::released,
-	    this, &SenderWindow::startSenderHandler);
+            this, &SenderWindow::startSenderHandler);
     connect(ui->stop, &QPushButton::released,
-	    this, &SenderWindow::stopSenderHandler);
+            this, &SenderWindow::stopSenderHandler);
 }
 
 void SenderWindow::closeEvent(QCloseEvent *event)
@@ -97,7 +96,7 @@ void SenderWindow::setActive()
 void SenderWindow::updateRateLabel()
 {
     auto r = ui->rateSlider->value();
-    auto rate = 2 * floor(r/2);
+    auto rate = 2 * floor(r / 2);
     controller->setRate(rate);
     qDebug() << "updating Rate Label: " << rate;
     auto str = QString("Rate: ");
@@ -108,11 +107,12 @@ void SenderWindow::updateRateLabel()
 
 void SenderWindow::startSenderHandler()
 {
-    if (!ui->remoteIPLine->isEnabled()) {
-	QMessageBox msgBox;
-	msgBox.setText("Sender is running!");
-	msgBox.exec();
-	return;
+    if (!ui->remoteIPLine->isEnabled())
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Sender is running!");
+        msgBox.exec();
+        return;
     }
 
     controller->setRemoteAddress(ui->remoteIPLine->text());
@@ -129,11 +129,12 @@ void SenderWindow::startSenderHandler()
 
 void SenderWindow::stopSenderHandler()
 {
-    if (ui->remoteIPLine->isEnabled()) {
-	QMessageBox msgBox;
-	msgBox.setText("Sender is not running!");
-	msgBox.exec();
-	return;
+    if (ui->remoteIPLine->isEnabled())
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Sender is not running!");
+        msgBox.exec();
+        return;
     }
     controller->stopSender();
     ui->remoteIPLine->setEnabled(true);
@@ -143,7 +144,7 @@ void SenderWindow::stopSenderHandler()
     setStandBy();
 }
 
-void SenderWindow::setLabelColor(QLabel * label, QColor color)
+void SenderWindow::setLabelColor(QLabel *label, QColor color)
 {
     QPalette palette;
     palette.setColor(QPalette::Window, Qt::blue);
